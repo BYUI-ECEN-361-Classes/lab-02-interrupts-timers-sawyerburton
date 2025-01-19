@@ -38,6 +38,7 @@ extern int best_reaction_time_in_millisec;
 
 // Globals
 #define upper_limit_millisec_to_wait  7000;  //Give the user up to 7 seconds to wonder
+int test = 6969;
 
 int rand_millisec;
 int last_reaction_time_in_millisec = 0;
@@ -59,18 +60,27 @@ void got_start()
 		 When Start is pressed:
 		 1.) Display the Waiting "----"
 		 2.) Wait for a random number of millisec's
-		 3.) Turn on all the 7-Seg lights (that's "GO"
+		 3.) Turn on all the 7-Seg lights (that's "GO")
 		 4.) Start the Reaction timer. (Hint: Use the same function you used to start the other timers)
 		*/
+
 		started_doing_reaction_timers = true;
 	    Clear_LEDs();
 		rand_millisec =  rand() % upper_limit_millisec_to_wait;
 
+
+
 	  /**************** STUDENT TO FILL IN START HERE ********************/
-		// Step 1
-		// Step 2
-		// Step 3
-		// Step 4
+
+		//MultiFunctionShield_Display(0x2D2D);
+		Display_Waiting(); //Display "----"
+		HAL_Delay(rand_millisec); //Wait up to 7 seconds
+		Display_All(); //Display "GO"
+		HAL_TIM_Base_Start_IT(&htim3); //Start the timer
+
+
+
+
 	  /**************** STUDENT TO FILL IN END  HERE ********************/
 	}
 void got_stop()
@@ -81,16 +91,17 @@ void got_stop()
 		 2.) Read the value of timer
 		 3.) Display the value
 		 */
-		// 1.) Stop the timer
 
 
 	  /**************** STUDENT TO FILL IN START HERE ********************/
       // 1.) Stop the random timer // Random timer is timer3
+		HAL_TIM_Base_Stop_IT(&htim3);
 
       // 2.) Read the value of the timer -- this step provided
 		last_reaction_time_in_millisec = __HAL_TIM_GetCounter(&htim3) / 10; // Why is it divide by 10?
 
 	  // 3.) Display the value
+		MultiFunctionShield_Display(last_reaction_time_in_millisec);
 
 
       /**************** STUDENT TO FILL IN END HERE ********************/
